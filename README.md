@@ -14,7 +14,7 @@ RAG powered AI anlysis system for public SEC 10-K filings.
 python -m venv venv
 source venv/bin/activate
 pip install fastapi uvicorn httpx beautifulsoup4 chromadb sentence-transformers anthropic python-dotenv
-cp .env.example .env   # add your ANTHROPIC_API_KEY
+cp .env.example .env   # add API key 
 uvicorn main:app --reload
 ```
 
