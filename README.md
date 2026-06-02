@@ -1,6 +1,6 @@
 # SEC 10-K Document Analysis API
 
-A RAG-powered Q&A system over public SEC 10-K filings. Ask natural language questions and get answers cited directly from the source documents.
+A RAG-powered Q&A system over public SEC 10-K filings. 
 
 ## Stack
 
@@ -20,7 +20,7 @@ cp .env.example .env   # add your ANTHROPIC_API_KEY
 uvicorn main:app --reload
 ```
 
-Open `http://127.0.0.1:8000` for the chat UI or `http://127.0.0.1:8000/docs` for the API explorer.
+Open `http://127.0.0.1:8000` for the chat UI 
 
 ## Endpoints
 
@@ -30,8 +30,7 @@ Open `http://127.0.0.1:8000` for the chat UI or `http://127.0.0.1:8000/docs` for
 | GET | `/documents` | List all ingested documents |
 | GET | `/documents/{id}/sections` | Get extracted sections for a document |
 | POST | `/questions/ask` | Ask a question — returns answer + citations |
-| POST | `/analysis-jobs` | Submit a batch of questions asynchronously |
-| GET | `/analysis-jobs/{id}` | Poll async job status and results |
+
 
 ## Architecture
 
