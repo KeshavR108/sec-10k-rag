@@ -1,6 +1,6 @@
 RAG powered AI anlysis system for public SEC 10-K filings. 
 
-Stack:
+__Stack:__
 
 - Python / FastAPI
 - ChromaDB (vector store)
@@ -8,7 +8,7 @@ Stack:
 - Claude (Anthropic) for answer generation
 - BeautifulSoup for HTML parsing
 
-Setup:
+__Setup:__
 
 ```bash
 python -m venv venv
@@ -20,7 +20,7 @@ uvicorn main:app --reload
 
 Open http://127.0.0.1:8000 for the chat UI 
 
-Endpoints:
+__Endpoints:__
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -30,7 +30,7 @@ Endpoints:
 | POST | `/questions/ask` | Ask a question — returns answer + citations |
 
 
-Architecture:
+__Architecture:__
 
 Each filing goes through four stages:
 
@@ -39,14 +39,14 @@ Each filing goes through four stages:
 3. Embedding - chunks are embedded with all-MiniLM-L6-v2 locally, which is stored in ChromaDB with metadata (company/section)
 4. Retrieval and generation - At query time question gets embeded, 5 closest chunks retrieved by cosine similarity, and claude generates answer using only retrieved text (no outside knowledge is used)
 
-Tradeoffs:
+__Tradeoffs:__
 
 - local embeddings over api - free, no latency, doesn't have much quality difference for finance-related texts
 - using chromaDB over managed vector db - no set up, works fine for this scale
 - fixed-size chunking over semantic - more simple and predictable, recursive splitter would be better for paragraph boundaries
 - in memory document registry with json file persistence - very logical and predictable; if production-scale then postrgreSQL would be better
 
-What I would improve for production:
+__What I would improve for production:__
 
 - Hybrid search (vector + bm25) which would have better recall on exact financial figures
 - reranking step (get top 20, rerank with cross encoder, continue with 5 to claude)
