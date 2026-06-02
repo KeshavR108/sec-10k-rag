@@ -1,0 +1,17 @@
+{
+  // Press F5 (or the green ▶ in the Run & Debug panel) to start the API
+  // with breakpoints enabled. Stops at any breakpoint you set in the code.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run FastAPI (uvicorn)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["main:app", "--reload", "--host", "127.0.0.1", "--port", "8000"],
+      "cwd": "${workspaceFolder}",
+      "jinja": true,
+      "console": "integratedTerminal"
+    }
+  ]
+}

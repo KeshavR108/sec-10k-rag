@@ -1,0 +1,98 @@
+### SEC 10-K RAG API — sample requests
+# Requires the "REST Client" VS Code extension (humao.rest-client).
+# Start the server first (F5, or: uvicorn main:app --reload), then click
+# the "Send Request" link that appears above each request below.
+
+@base = http://127.0.0.1:8000
+
+### Health check
+GET {{base}}/health
+
+### Ingest Apple 2025 10-K
+POST {{base}}/documents/ingest
+Content-Type: application/json
+
+{
+  "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm",
+  "company_name": "Apple",
+  "doc_id": "aapl-2025"
+}
+
+### Ingest Microsoft 2025 10-K (for cross-company questions)
+POST {{base}}/documents/ingest
+Content-Type: application/json
+
+{
+  "url": "https://www.sec.gov/Archives/edgar/data/789019/000095017025100235/msft-20250630.htm",
+  "company_name": "Microsoft",
+  "doc_id": "msft-2025"
+}
+
+### Ingest NVIDIA 2025 10-K
+POST {{base}}/documents/ingest
+Content-Type: application/json
+
+{
+  "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000023/nvda-20250126.htm",
+  "company_name": "NVIDIA",
+  "doc_id": "nvda-2025"
+}
+
+### List all ingested documents
+GET {{base}}/documents
+
+### Get extracted sections for Apple (full text: add ?preview_chars=0)
+GET {{base}}/documents/aapl-2025/sections
+
+### Q&A — top business risks
+POST {{base}}/questions/ask
+Content-Type: application/json
+
+{
+  "question": "What are the top business risks described by the company?",
+  "top_k": 5
+}
+
+### Q&A — revenue growth / performance
+POST {{base}}/questions/ask
+Content-Type: application/json
+
+{
+  "question": "What does the company say about revenue growth or business performance?",
+  "top_k": 5
+}
+
+### Q&A — scoped to one company
+POST {{base}}/questions/ask
+Content-Type: application/json
+
+{
+  "question": "What are the main business segments or operating priorities?",
+  "company_filter": "Apple",
+  "top_k": 5
+}
+
+### Q&A — compare risk factors between two companies
+POST {{base}}/questions/ask
+Content-Type: application/json
+
+{
+  "question": "Compare the risk factors between Apple and Microsoft.",
+  "section_filter": "Risk Factors",
+  "top_k": 8
+}
+
+### Async analysis job — submit a batch of questions
+# @name createJob
+POST {{base}}/analysis-jobs
+Content-Type: application/json
+
+{
+  "questions": [
+    "What are the top business risks?",
+    "What themes appear repeatedly in management discussion?"
+  ]
+}
+
+### Poll an analysis job (paste the job_id returned above)
+GET {{base}}/analysis-jobs/{{createJob.response.body.job_id}}

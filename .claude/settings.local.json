@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import pypdf\")",
+      "Bash(pip3 install *)",
+      "Bash(python3 -c ' *)",
+      "Bash(venv/bin/pip list *)",
+      "Bash(venv/bin/python -c ' *)",
+      "Bash(rm -rf chroma_db)",
+      "Bash(grep -vE \"Loading weights|StarletteDeprecation|from starlette|it/s\\\\]$\")",
+      "Bash(grep -vE \"Loading weights|it/s\\\\]$|HF_TOKEN|Warning: You\")",
+      "Bash(grep -vE \"Loading weights|it/s\\\\]$|HF_TOKEN|Warning|StarletteDeprecation|from starlette\")"
+    ]
+  }
+}
