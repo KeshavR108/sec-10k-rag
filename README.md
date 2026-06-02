@@ -1,6 +1,4 @@
-# SEC 10-K Document Analysis API
-
-A RAG-powered Q&A system over public SEC 10-K filings. 
+RAG powered AI anlysis system for public SEC 10-K filings. 
 
 ## Stack
 
@@ -20,7 +18,7 @@ cp .env.example .env   # add your ANTHROPIC_API_KEY
 uvicorn main:app --reload
 ```
 
-Open `http://127.0.0.1:8000` for the chat UI 
+Open http://127.0.0.1:8000 for the chat UI 
 
 ## Endpoints
 
@@ -36,23 +34,21 @@ Open `http://127.0.0.1:8000` for the chat UI
 
 Each filing goes through four stages:
 
-1. **Ingestion** — HTML is stripped with BeautifulSoup, then the four major 10-K sections (Business, Risk Factors, MD&A, Financial Statements) are extracted using regex anchors on Item headings. The last occurrence of each heading is used to skip the Table of Contents.
-2. **Chunking** — Each section is split into 500-word sliding windows with a 50-word overlap to preserve context at boundaries.
-3. **Embedding** — Chunks are embedded locally with `all-MiniLM-L6-v2` and stored in ChromaDB with company/section metadata.
-4. **Retrieval + Generation** — At query time the question is embedded, the top-5 closest chunks are retrieved by cosine similarity, and Claude generates a grounded answer using only the retrieved text.
+1. Ingestion - BeautifulSoup strips HTML, then four sections (business, risk factors, MD&A, financial statements) are extracted with regex anchors on item hadings. Table of contents is skipped since last occurence of each heading is used.
+2. Chunking - Each section is split into 500 word windonws with 50 word overlap to preserve context at boundareis
+3. Embedding - chunks are embedded with all-MiniLM-L6-v2 locally, which is stored in ChromaDB with metadata (company/section)
+4. Retrieval and generation - At query time question gets embeded, 5 closest chunks retrieved by cosine similarity, and claude generates answer using only retrieved text (no outside knowledge is used)
 
 ## Tradeoffs
 
-- Local embeddings over API embeddings — free, no latency, negligible quality difference for financial text
-- ChromaDB over a managed vector DB — zero setup, right for this scale, not horizontally scalable
-- Fixed-size chunking over semantic chunking — simple and predictable; a recursive splitter would better respect paragraph boundaries
-- In-memory document registry with JSON file persistence — easy to reason about; production would use PostgreSQL
+- local embeddings over api - free, no latency, doesn't have much quality difference for finance-related texts
+- using chromaDB over managed vector db - no set up, works fine for this scale
+- fixed-size chunking over semantic - more simple and predictable, recursive splitter would be better for paragraph boundaries
+- in memory document registry with json file persistence - very logical and predictable; if production-scale then postrgreSQL would be better
 
 ## What I would improve for production
 
-- Hybrid search (BM25 + vector) for better recall on exact financial figures
-- A reranking step (retrieve top-20, rerank with a cross-encoder, pass best 5 to Claude)
-- Replace JSON registry with a proper database
-- Streaming responses
-- Authentication and rate limiting on all endpoints
-- A proper job queue (Celery + Redis) instead of FastAPI BackgroundTasks
+- Hybrid search (vector + bm25) which would have better recall on exact financial figures
+- reranking step (get top 20, rerank with cross encoder, continue with 5 to claude)
+- replace json with proper databse
+- streaming responses
