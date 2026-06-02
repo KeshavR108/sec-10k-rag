@@ -1,27 +1,21 @@
-import os
 import uuid
-import asyncio
 import json
 import httpx
 from pathlib import Path
 from datetime import datetime, timezone
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from ingestion import parse_10k_html
 from chunker import chunk_sections
-from embedding import store_chunks, list_doc_ids, delete_doc_chunks, get_collection
+from embedding import store_chunks, get_collection
 from rag import answer_question
 
-app = FastAPI(
-    title="SEC 10-K Document Analysis API",
-    description="RAG-powered Q&A over SEC 10-K filings",
-    version="1.0.0",
-)
+app = FastAPI(docs_url=None, redoc_url=None)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -30,7 +24,6 @@ def root():
     return FileResponse("static/index.html")
 
 DOCUMENTS: dict[str, dict] = {}
-JOBS: dict[str, dict] = {}
 
 REGISTRY_PATH = Path("./documents_registry.json")
 
@@ -61,49 +54,10 @@ class IngestRequest(BaseModel):
     company_name: str
     doc_id: Optional[str] = None
 
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm",
-                "company_name": "Apple",
-                "doc_id": "aapl-2025",
-            }
-        }
-    }
-
 
 class QuestionRequest(BaseModel):
     question: str
-    company_filter: Optional[str] = None
-    section_filter: Optional[str] = None
-    doc_id_filter: Optional[str] = None
     top_k: int = 5
-
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "question": "What are the top business risks described by the company?",
-                "top_k": 5,
-            }
-        }
-    }
-
-
-class AnalysisJobRequest(BaseModel):
-    questions: list[str]
-    company_filter: Optional[str] = None
-    doc_id_filter: Optional[str] = None
-
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "questions": [
-                    "What are the top business risks described by the company?",
-                    "What themes appear repeatedly in management discussion?",
-                ]
-            }
-        }
-    }
 
 
 async def _fetch_html(url: str) -> str:
@@ -140,15 +94,12 @@ def _ingest_pipeline(html: str, company_name: str, doc_id: str) -> dict:
 @app.post("/documents/ingest", status_code=201)
 async def ingest_document(req: IngestRequest):
     if not req.url and not req.html:
-        raise HTTPException(status_code=400, detail="Provide either `url` or `html`.")
+        raise HTTPException(status_code=400, detail="Provide either a url or html.")
 
     doc_id = req.doc_id or str(uuid.uuid4())
 
     if doc_id in DOCUMENTS:
-        raise HTTPException(
-            status_code=409,
-            detail=f"Document '{doc_id}' already exists. Use a different doc_id to re-ingest.",
-        )
+        raise HTTPException(status_code=409, detail=f"Document '{doc_id}' already exists.")
 
     html = req.html
     if req.url:
@@ -217,73 +168,9 @@ def get_sections(doc_id: str, preview_chars: int = 500):
 @app.post("/questions/ask")
 def ask_question(req: QuestionRequest):
     if not DOCUMENTS:
-        raise HTTPException(
-            status_code=400,
-            detail="No documents ingested yet. POST to /documents/ingest first.",
-        )
-
-    result = answer_question(
-        question=req.question,
-        top_k=req.top_k,
-        company_filter=req.company_filter,
-        section_filter=req.section_filter,
-        doc_id_filter=req.doc_id_filter,
-    )
-    return result
-
-
-async def _run_analysis_job(job_id: str, req: AnalysisJobRequest):
-    JOBS[job_id]["status"] = "running"
-    JOBS[job_id]["started_at"] = datetime.now(timezone.utc).isoformat()
-
-    results = []
-    try:
-        for question in req.questions:
-            result = answer_question(
-                question=question,
-                company_filter=req.company_filter,
-                doc_id_filter=req.doc_id_filter,
-            )
-            results.append(result)
-            await asyncio.sleep(0)
-
-        JOBS[job_id]["status"] = "completed"
-        JOBS[job_id]["completed_at"] = datetime.now(timezone.utc).isoformat()
-        JOBS[job_id]["results"] = results
-
-    except Exception as e:
-        JOBS[job_id]["status"] = "failed"
-        JOBS[job_id]["error"] = str(e)
-
-
-@app.post("/analysis-jobs", status_code=202)
-async def create_analysis_job(req: AnalysisJobRequest, background_tasks: BackgroundTasks):
-    if not DOCUMENTS:
         raise HTTPException(status_code=400, detail="No documents ingested yet.")
-    if not req.questions:
-        raise HTTPException(status_code=400, detail="Provide at least one question.")
 
-    job_id = str(uuid.uuid4())
-    JOBS[job_id] = {
-        "job_id": job_id,
-        "status": "queued",
-        "question_count": len(req.questions),
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "started_at": None,
-        "completed_at": None,
-        "results": None,
-        "error": None,
-    }
-
-    background_tasks.add_task(_run_analysis_job, job_id, req)
-    return {"job_id": job_id, "status": "queued", "question_count": len(req.questions)}
-
-
-@app.get("/analysis-jobs/{job_id}")
-def get_analysis_job(job_id: str):
-    if job_id not in JOBS:
-        raise HTTPException(status_code=404, detail=f"Job '{job_id}' not found.")
-    return JOBS[job_id]
+    return answer_question(question=req.question, top_k=req.top_k)
 
 
 @app.get("/health")

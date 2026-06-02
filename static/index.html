@@ -12,285 +12,182 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      background: #f0f2f5;
-      color: #1a1a2e;
+      background: #f5f5f5;
+      color: #111;
     }
 
-    /* ── Header ── */
     header {
-      background: #1a1a2e;
-      color: white;
-      padding: 14px 24px;
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-      flex-shrink: 0;
+      padding: 16px 24px;
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 16px;
+      font-weight: 600;
     }
-    header span { opacity: 0.6; font-weight: 400; font-size: 14px; margin-left: 10px; }
 
-    /* ── Layout ── */
     .main { display: flex; flex: 1; overflow: hidden; }
 
-    /* ── Sidebar ── */
     .sidebar {
-      width: 280px;
+      width: 260px;
       background: white;
-      border-right: 1px solid #e4e4e7;
+      border-right: 1px solid #e0e0e0;
+      padding: 20px 16px;
       display: flex;
       flex-direction: column;
-      gap: 0;
+      gap: 12px;
       overflow-y: auto;
       flex-shrink: 0;
     }
 
-    .sidebar-section { padding: 18px 16px; border-bottom: 1px solid #f0f0f0; }
-    .sidebar-section:last-child { border-bottom: none; }
-
-    .sidebar h2 {
-      font-size: 11px;
-      font-weight: 700;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 12px;
-    }
+    .sidebar h2 { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
 
     input[type="text"], input[type="url"] {
       width: 100%;
       padding: 8px 10px;
       border: 1px solid #ddd;
-      border-radius: 7px;
+      border-radius: 6px;
       font-size: 13px;
       outline: none;
-      color: #1a1a2e;
-      background: #fafafa;
-      margin-bottom: 7px;
-      transition: border-color 0.15s;
     }
-    input:focus { border-color: #6366f1; background: white; }
+    input:focus { border-color: #555; }
 
-    .btn {
-      padding: 8px 14px;
+    button {
+      padding: 8px 12px;
       border: none;
-      border-radius: 7px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 13px;
-      font-weight: 600;
-      transition: background 0.15s, opacity 0.15s;
-    }
-    .btn-primary { background: #6366f1; color: white; width: 100%; }
-    .btn-primary:hover { background: #4f46e5; }
-    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-ghost {
-      background: #f4f4f5;
-      color: #3f3f46;
-      width: 100%;
-      text-align: left;
-      margin-bottom: 5px;
       font-weight: 500;
+      background: #111;
+      color: white;
+      width: 100%;
     }
-    .btn-ghost:hover { background: #e4e4e7; }
-    .btn-ghost:last-child { margin-bottom: 0; }
+    button:hover { background: #333; }
+    button:disabled { background: #999; cursor: not-allowed; }
 
-    .status-msg { font-size: 12px; color: #059669; margin-top: 5px; }
-    .error-msg  { font-size: 12px; color: #dc2626; margin-top: 5px; }
-    .hint-msg   { font-size: 12px; color: #888; margin-top: 5px; }
+    .msg { font-size: 12px; margin-top: 4px; }
+    .msg.ok  { color: #2a7a2a; }
+    .msg.err { color: #cc0000; }
+    .msg.info { color: #888; }
 
-    /* ── Doc list ── */
-    .doc-item {
-      padding: 9px 10px;
-      background: #f8f8ff;
-      border: 1px solid #e0e0ff;
-      border-radius: 7px;
-      margin-bottom: 6px;
-      font-size: 13px;
-    }
-    .doc-item:last-child { margin-bottom: 0; }
-    .doc-item .company { font-weight: 600; color: #1a1a2e; }
-    .doc-item .meta    { color: #888; font-size: 11px; margin-top: 2px; }
-    .badge {
-      display: inline-block;
-      padding: 1px 7px;
-      background: #d1fae5;
-      color: #065f46;
-      border-radius: 99px;
-      font-size: 10px;
-      font-weight: 700;
-      margin-left: 5px;
-    }
+    .doc-list { display: flex; flex-direction: column; gap: 6px; }
+    .doc-item { font-size: 12px; padding: 8px 10px; background: #f9f9f9; border-radius: 6px; border: 1px solid #e8e8e8; }
+    .doc-item .name { font-weight: 600; }
+    .doc-item .meta { color: #888; margin-top: 2px; }
 
-    /* ── Chat ── */
     .chat-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
     .messages {
       flex: 1;
       overflow-y: auto;
-      padding: 24px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 14px;
     }
 
-    .empty-state {
-      text-align: center;
-      color: #aaa;
+    .empty {
+      color: #bbb;
       font-size: 14px;
+      text-align: center;
       margin-top: 80px;
-      line-height: 1.8;
     }
-    .empty-state big { display: block; font-size: 38px; margin-bottom: 10px; }
 
-    .message { display: flex; flex-direction: column; max-width: 78%; }
+    .message { display: flex; flex-direction: column; max-width: 75%; }
     .message.user      { align-self: flex-end; align-items: flex-end; }
-    .message.assistant { align-self: flex-start; align-items: flex-start; }
+    .message.assistant { align-self: flex-start; }
 
     .bubble {
-      padding: 11px 15px;
-      border-radius: 14px;
+      padding: 10px 14px;
+      border-radius: 12px;
       font-size: 14px;
-      line-height: 1.65;
-      white-space: pre-wrap;
+      line-height: 1.6;
     }
-    .message.user      .bubble { background: #6366f1; color: white; border-bottom-right-radius: 4px; }
-    .message.assistant .bubble { background: white; border: 1px solid #e4e4e7; border-bottom-left-radius: 4px; }
+    .message.user      .bubble { background: #111; color: white; border-bottom-right-radius: 3px; }
+    .message.assistant .bubble { background: white; border: 1px solid #e0e0e0; border-bottom-left-radius: 3px; }
 
-    /* Sources */
-    .sources { margin-top: 6px; width: 100%; }
     .sources-toggle {
       font-size: 12px;
-      color: #6366f1;
-      cursor: pointer;
+      color: #888;
       background: none;
       border: none;
-      padding: 0;
-      font-weight: 600;
+      padding: 4px 0 0 0;
+      cursor: pointer;
+      width: auto;
+      text-align: left;
+      font-weight: normal;
     }
-    .sources-toggle:hover { text-decoration: underline; }
+    .sources-toggle:hover { color: #333; background: none; }
 
-    .sources-list { margin-top: 7px; display: none; flex-direction: column; gap: 6px; }
+    .sources-list { display: none; flex-direction: column; gap: 5px; margin-top: 5px; }
     .sources-list.open { display: flex; }
 
-    .source-item {
-      background: #fafafe;
-      border: 1px solid #dde;
-      border-radius: 7px;
-      padding: 8px 11px;
-      font-size: 12px;
-    }
-    .source-meta    { font-weight: 700; color: #6366f1; margin-bottom: 4px; }
-    .source-excerpt { color: #555; line-height: 1.5; }
+    .source-item { background: #f9f9f9; border: 1px solid #e8e8e8; border-radius: 6px; padding: 7px 10px; font-size: 12px; }
+    .source-meta { font-weight: 600; color: #555; margin-bottom: 3px; }
+    .source-excerpt { color: #777; line-height: 1.5; }
 
-    /* Input row */
     .input-row {
       padding: 14px 20px;
       background: white;
-      border-top: 1px solid #e4e4e7;
+      border-top: 1px solid #e0e0e0;
       display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-shrink: 0;
+      gap: 8px;
     }
-    .input-row input {
-      flex: 1;
-      padding: 10px 14px;
-      border: 1px solid #ddd;
-      border-radius: 99px;
-      font-size: 14px;
-      outline: none;
-      margin-bottom: 0;
-      background: #fafafa;
-    }
-    .input-row input:focus { border-color: #6366f1; background: white; }
-    .input-row .btn { padding: 10px 20px; border-radius: 99px; white-space: nowrap; }
+    .input-row input { flex: 1; margin: 0; }
+    .input-row button { width: auto; padding: 8px 18px; }
 
-    /* Spinner */
     .spinner {
       display: inline-block;
-      width: 13px; height: 13px;
+      width: 12px; height: 12px;
       border: 2px solid currentColor;
       border-top-color: transparent;
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       vertical-align: middle;
-      margin-right: 5px;
+      margin-right: 4px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
-<header>
-  📊 SEC 10-K Analyst
-  <span>Retrieval-Augmented Q&amp;A over SEC filings</span>
-</header>
+<header>SEC 10-K Analyst</header>
 
 <div class="main">
-
-  <!-- ── Sidebar ── -->
   <div class="sidebar">
-
-    <!-- Quick add -->
-    <div class="sidebar-section">
-      <h2>Quick Add</h2>
-      <button class="btn btn-ghost" onclick="quickFill('https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm','Apple','aapl-2025')">
-        🍎 Apple 2025 10-K
-      </button>
-      <button class="btn btn-ghost" onclick="quickFill('https://www.sec.gov/Archives/edgar/data/789019/000095017025100235/msft-20250630.htm','Microsoft','msft-2025')">
-        🪟 Microsoft 2025 10-K
-      </button>
-      <button class="btn btn-ghost" onclick="quickFill('https://www.sec.gov/Archives/edgar/data/1045810/000104581025000023/nvda-20250126.htm','NVIDIA','nvda-2025')">
-        🟩 NVIDIA 2025 10-K
-      </button>
-    </div>
-
-    <!-- Manual add -->
-    <div class="sidebar-section">
-      <h2>Add Custom Filing</h2>
-      <input type="url" id="ingest-url"     placeholder="SEC EDGAR .htm URL" />
-      <input type="text" id="ingest-company" placeholder="Company name (e.g. Apple)" />
-      <input type="text" id="ingest-docid"   placeholder="Doc ID (optional)" />
-      <button class="btn btn-primary" id="ingest-btn" onclick="ingestDoc()">
-        Ingest Filing
-      </button>
+    <div>
+      <h2 style="margin-bottom: 10px;">Add Filing</h2>
+      <input type="url"  id="ingest-url"     placeholder="SEC EDGAR URL" style="margin-bottom: 6px;" />
+      <input type="text" id="ingest-company" placeholder="Company name"  style="margin-bottom: 6px;" />
+      <button id="ingest-btn" onclick="ingestDoc()">Ingest</button>
       <div id="ingest-status"></div>
     </div>
 
-    <!-- Ingested docs -->
-    <div class="sidebar-section">
-      <h2>Ingested Documents</h2>
-      <div id="doc-list">
-        <div class="hint-msg">No documents yet — add one above.</div>
+    <div>
+      <h2 style="margin-bottom: 10px;">Documents</h2>
+      <div class="doc-list" id="doc-list">
+        <div style="font-size:12px;color:#bbb;">None yet.</div>
       </div>
     </div>
-
   </div>
 
-  <!-- ── Chat ── -->
   <div class="chat-area">
     <div class="messages" id="messages">
-      <div class="empty-state" id="empty-state">
-        <big>💬</big>
-        Add a filing on the left, then ask a question below.<br>
-        <small style="color:#bbb">e.g. "What are the top business risks?" · "How did revenue grow?"</small>
-      </div>
+      <div class="empty" id="empty">Add a filing on the left, then ask a question below.</div>
     </div>
     <div class="input-row">
-      <input type="text" id="question-input"
-             placeholder="Ask a question about the filings…"
-             onkeydown="if(event.key==='Enter' && !event.shiftKey) askQuestion()" />
-      <button class="btn btn-primary" id="ask-btn" onclick="askQuestion()">Send</button>
+      <input type="text" id="question-input" placeholder="Ask a question…"
+             onkeydown="if(event.key==='Enter') askQuestion()" />
+      <button id="ask-btn" onclick="askQuestion()">Send</button>
     </div>
   </div>
-
 </div>
 
 <script>
   window.onload = loadDocs;
 
-  // ── Load & render documents ──────────────────────────────────────────────
   async function loadDocs() {
     try {
-      const res = await fetch('/documents');
+      const res  = await fetch('/documents');
       const data = await res.json();
       renderDocs(data.documents || []);
     } catch (_) {}
@@ -299,87 +196,67 @@
   function renderDocs(docs) {
     const list = document.getElementById('doc-list');
     if (!docs.length) {
-      list.innerHTML = '<div class="hint-msg">No documents yet — add one above.</div>';
+      list.innerHTML = '<div style="font-size:12px;color:#bbb;">None yet.</div>';
       return;
     }
     list.innerHTML = docs.map(d => `
       <div class="doc-item">
-        <div class="company">${d.company} <span class="badge">✓</span></div>
+        <div class="name">${d.company}</div>
         <div class="meta">${d.chunk_count} chunks · ${d.sections_found.join(', ')}</div>
       </div>
     `).join('');
   }
 
-  // ── Quick-fill ───────────────────────────────────────────────────────────
-  function quickFill(url, company, docId) {
-    document.getElementById('ingest-url').value     = url;
-    document.getElementById('ingest-company').value = company;
-    document.getElementById('ingest-docid').value   = docId;
-    document.getElementById('ingest-status').innerHTML =
-      '<div class="hint-msg">Fields filled — click Ingest Filing to start.</div>';
-  }
-
-  // ── Ingest ───────────────────────────────────────────────────────────────
   async function ingestDoc() {
     const url     = document.getElementById('ingest-url').value.trim();
     const company = document.getElementById('ingest-company').value.trim();
-    const docId   = document.getElementById('ingest-docid').value.trim();
     const statusEl = document.getElementById('ingest-status');
     const btn      = document.getElementById('ingest-btn');
 
     if (!url || !company) {
-      statusEl.innerHTML = '<div class="error-msg">Please fill in the URL and company name.</div>';
+      statusEl.innerHTML = '<div class="msg err">Fill in both fields.</div>';
       return;
     }
 
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span>Ingesting…';
-    statusEl.innerHTML = '<div class="hint-msg">Downloading & processing (~15s for large filings)…</div>';
+    statusEl.innerHTML = '<div class="msg info">Downloading (~15s)…</div>';
 
     try {
-      const body = { url, company_name: company };
-      if (docId) body.doc_id = docId;
-
       const res  = await fetch('/documents/ingest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ url, company_name: company }),
       });
       const data = await res.json();
 
       if (!res.ok) {
-        statusEl.innerHTML = `<div class="error-msg">${data.detail}</div>`;
+        statusEl.innerHTML = `<div class="msg err">${data.detail}</div>`;
       } else {
-        statusEl.innerHTML =
-          `<div class="status-msg">✓ ${data.company} ingested — ${data.chunk_count} chunks</div>`;
+        statusEl.innerHTML = `<div class="msg ok">✓ Done — ${data.chunk_count} chunks</div>`;
         document.getElementById('ingest-url').value     = '';
         document.getElementById('ingest-company').value = '';
-        document.getElementById('ingest-docid').value   = '';
         loadDocs();
       }
     } catch (e) {
-      statusEl.innerHTML = `<div class="error-msg">Network error: ${e.message}</div>`;
+      statusEl.innerHTML = `<div class="msg err">Error: ${e.message}</div>`;
     }
 
     btn.disabled = false;
-    btn.innerHTML = 'Ingest Filing';
+    btn.innerHTML = 'Ingest';
   }
 
-  // ── Ask ──────────────────────────────────────────────────────────────────
   async function askQuestion() {
     const input    = document.getElementById('question-input');
     const btn      = document.getElementById('ask-btn');
     const question = input.value.trim();
     if (!question) return;
 
-    // Clear input, lock controls
     input.value    = '';
     input.disabled = true;
     btn.disabled   = true;
 
-    // Remove empty state on first message
-    document.getElementById('empty-state')?.remove();
-
+    document.getElementById('empty')?.remove();
     appendMessage('user', question);
     const thinkingId = appendThinking();
 
@@ -390,18 +267,18 @@
         body: JSON.stringify({ question, top_k: 5 }),
       });
       const data = await res.json();
-      removeThinking(thinkingId);
+      removeEl(thinkingId);
 
       if (!res.ok) {
-        appendMessage('assistant', `⚠️ ${data.detail}`, []);
+        appendMessage('assistant', `Error: ${data.detail}`);
       } else if (data.error && !data.answer) {
-        appendMessage('assistant', `⚠️ ${data.error}`, data.sources || []);
+        appendMessage('assistant', data.error);
       } else {
         appendMessage('assistant', data.answer, data.sources || []);
       }
     } catch (e) {
-      removeThinking(thinkingId);
-      appendMessage('assistant', `Network error: ${e.message}`, []);
+      removeEl(thinkingId);
+      appendMessage('assistant', `Network error: ${e.message}`);
     }
 
     input.disabled = false;
@@ -409,7 +286,6 @@
     input.focus();
   }
 
-  // ── DOM helpers ──────────────────────────────────────────────────────────
   function appendMessage(role, text, sources = []) {
     const messages = document.getElementById('messages');
     const div      = document.createElement('div');
@@ -417,61 +293,50 @@
 
     let sourcesHtml = '';
     if (sources.length) {
-      const id = 'src-' + Date.now() + Math.random();
+      const id = 'src-' + Date.now();
       sourcesHtml = `
-        <div class="sources">
-          <button class="sources-toggle" onclick="toggleSources('${id}')">
-            📎 ${sources.length} source${sources.length > 1 ? 's' : ''} — click to expand
-          </button>
-          <div class="sources-list" id="${id}">
-            ${sources.map(s => `
-              <div class="source-item">
-                <div class="source-meta">
-                  [SOURCE ${s.source_index}] ${s.company} · ${s.section}
-                </div>
-                <div class="source-excerpt">${s.excerpt}</div>
-              </div>`).join('')}
-          </div>
+        <button class="sources-toggle" onclick="toggleSources('${id}')">
+          ${sources.length} source${sources.length > 1 ? 's' : ''} — show
+        </button>
+        <div class="sources-list" id="${id}">
+          ${sources.map(s => `
+            <div class="source-item">
+              <div class="source-meta">[${s.source_index}] ${s.company} · ${s.section}</div>
+              <div class="source-excerpt">${s.excerpt}</div>
+            </div>`).join('')}
         </div>`;
     }
 
-    div.innerHTML = `<div class="bubble">${escHtml(text)}</div>${sourcesHtml}`;
+    div.innerHTML = `<div class="bubble">${esc(text)}</div>${sourcesHtml}`;
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
   }
 
   function appendThinking() {
-    const id       = 'thinking-' + Date.now();
-    const messages = document.getElementById('messages');
-    const div      = document.createElement('div');
-    div.className  = 'message assistant';
-    div.id         = id;
-    div.innerHTML  = '<div class="bubble" style="color:#aaa"><span class="spinner"></span>Thinking…</div>';
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
+    const id  = 'thinking-' + Date.now();
+    const div = document.createElement('div');
+    div.className = 'message assistant';
+    div.id        = id;
+    div.innerHTML = '<div class="bubble" style="color:#aaa"><span class="spinner"></span>Thinking…</div>';
+    document.getElementById('messages').appendChild(div);
+    document.getElementById('messages').scrollTop = 99999;
     return id;
   }
 
-  function removeThinking(id) {
-    document.getElementById(id)?.remove();
-  }
+  function removeEl(id) { document.getElementById(id)?.remove(); }
 
   function toggleSources(id) {
     const el  = document.getElementById(id);
     const btn = el.previousElementSibling;
     el.classList.toggle('open');
-    const n   = el.children.length;
+    const n = el.children.length;
     btn.textContent = el.classList.contains('open')
-      ? '📎 Hide sources'
-      : `📎 ${n} source${n > 1 ? 's' : ''} — click to expand`;
+      ? `${n} source${n > 1 ? 's' : ''} — hide`
+      : `${n} source${n > 1 ? 's' : ''} — show`;
   }
 
-  function escHtml(str) {
-    return str
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/\n/g, '<br>');
+  function esc(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
   }
 </script>
 </body>
