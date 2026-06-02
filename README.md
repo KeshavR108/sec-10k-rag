@@ -4,7 +4,7 @@ RAG powered AI anlysis system for public SEC 10-K filings.
 
 - Python / FastAPI
 - ChromaDB (vector store)
-- SentenceTransformers — `all-MiniLM-L6-v2` (local embeddings)
+- SentenceTransformers — all-MiniLM-L6-v2 (local embeddings)
 - Claude (Anthropic) for answer generation
 - BeautifulSoup for HTML parsing
 
