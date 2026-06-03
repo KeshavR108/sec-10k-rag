@@ -17,12 +17,12 @@ if _api_key:
 
 _MODEL = "claude-sonnet-4-6"
 
-_SYSTEM_PROMPT = """You are a financial analyst assistant. Answer the user's question using ONLY the source excerpts provided below. Do not use any outside knowledge.
+_SYSTEM_PROMPT = """You are a financial analyst assistant. Answer the user's question using ONLY the source excerpts provided below. Don't use outside knowledge.
 
 Rules:
 - If the answer is not present in the sources, say "The provided filings do not contain enough information to answer this question."
 - Always cite your sources using [SOURCE N] inline.
-- After your answer, include a "Citations" section listing each source you used with: Source N → Company | Section.
+- After your answer, include "Citations" section listing each source you used with: Source N → Company | Section.
 - Be concise and factual."""
 
 
@@ -92,7 +92,7 @@ def answer_question(
                 for i, c in enumerate(chunks)
             ],
             "truncated": False,
-            "error": "ANTHROPIC_API_KEY is not set. Returned retrieved sources without a generated answer.",
+            "error": "API key is not set. Returned retrieved sources without a generated answer.",
         }
 
     try:
